@@ -12,15 +12,32 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 
+import java.io.IOException;
 import java.lang.Override;
 import java.lang.String;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Tela2 extends ActionBarActivity {
     private RadioButton emclinica, actransito, incendio;
     private EditText edLatitude, edLongitude;
+    private String cpf, nome, mae, nsc, s;
     private Button sos;
+
+    public Map<String, String> conectar(){
+        //HashMap
+        Map<String, String> mapa = new HashMap<>();
+        mapa.put("cpf", cpf);
+        mapa.put("nome", nome);
+        mapa.put("nomeMae", mae);
+        mapa.put("dataNascimento", nsc);
+
+        return mapa;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +51,22 @@ public class Tela2 extends ActionBarActivity {
         sos = (Button) findViewById(R.id.sos);
         sos.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                startGPS();
+                //startGPS();
+
+                new Thread(){
+
+                    @Override
+                    public void run(){
+                        HttpHelper enviaDados = new HttpHelper();
+
+                        try{
+                            s = enviaDados.doPost("http://10.0.2.2:8080/ExemploWebService/rest/ocorrencia/todas", conectar(), "UTF-8");
+                        }catch(IOException e){
+
+                        }
+                    }
+                }.start();
+                Toast.makeText(getApplicationContext(), "Ocorrencia enviada.", Toast.LENGTH_SHORT).show();
             }
         });
     }

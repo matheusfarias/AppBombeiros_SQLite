@@ -82,13 +82,6 @@ public class Tela1 extends ActionBarActivity {
                 }
                 if(validar && cpf_valido){
                     if( conecte.logar(nome, nsc, cpf, mae)){
-                        //HashMap
-                        Map<String, String> mapa = new HashMap<>();
-                        mapa.put("cpf", cpf);
-                        mapa.put("nome", nome);
-                        mapa.put("nomeMae", mae);
-                        mapa.put("dataNascimento", nsc);
-
                         Intent trocatela = new
                         Intent(Tela1.this, Tela2.class);
                         Tela1.this.startActivity(trocatela);
